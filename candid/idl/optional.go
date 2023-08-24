@@ -3,9 +3,10 @@ package idl
 import (
 	"bytes"
 	"fmt"
-	"github.com/aviate-labs/leb128"
 	"math/big"
 	"reflect"
+
+	"github.com/aviate-labs/leb128"
 )
 
 // OptionalType is the type of an optional value.
@@ -95,7 +96,7 @@ func (o OptionalType) UnmarshalGo(raw any, _v any) error {
 	if v := reflect.ValueOf(_v); v.Kind() == reflect.Ptr {
 		v := v.Elem() // Dereference the pointer.
 		if v.Kind() != reflect.Ptr {
-			return NewUnmarshalGoError(raw, _v)
+			v = v.Addr()
 		}
 		if !v.IsNil() {
 			// No need to allocate a new pointer.
